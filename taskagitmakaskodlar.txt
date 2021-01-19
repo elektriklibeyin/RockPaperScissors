@@ -1,0 +1,134 @@
+package com.example.taskagitmakas;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.Image;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button b_rock,b_scissors,b_paper;
+    TextView tv_score;
+    ImageView iv_ComputerChoice, iv_HumanChoice;
+
+    int HumanScore, ComputerScore = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        b_paper = (Button) findViewById(R.id.b_paper);
+        b_scissors = (Button) findViewById(R.id.b_scissors);
+        b_rock = (Button) findViewById(R.id.b_rock);
+
+        iv_ComputerChoice = (ImageView) findViewById(R.id.iv_ComputerChoice);
+        iv_HumanChoice = (ImageView) findViewById(R.id.iv_HumanChoice);
+
+        tv_score = (TextView) findViewById(R.id.tv_score);
+
+        b_paper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_HumanChoice.setImageResource(R.drawable.kagit);
+               String message = play_turn ("kagit");
+                Toast.makeText(MainActivity.this, message,Toast.LENGTH_SHORT).show();
+               tv_score.setText("Oyuncu Puanı " +Integer.toString(HumanScore)+" Bilgisayar Puanı "+Integer.toString(ComputerScore));
+            }
+        });
+
+        b_rock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_HumanChoice.setImageResource(R.drawable.tas);
+               String message =  play_turn ("tas");
+                Toast.makeText(MainActivity.this, message,Toast.LENGTH_SHORT).show();
+                tv_score.setText("Oyuncu Puanı " +Integer.toString(HumanScore)+" Bilgisayar Puanı "+Integer.toString(ComputerScore));
+            }
+        });
+
+        b_scissors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_HumanChoice.setImageResource(R.drawable.makas);
+                String message = play_turn("makas");
+                Toast.makeText(MainActivity.this, message,Toast.LENGTH_SHORT).show();
+                tv_score.setText("Oyuncu Puanı " +Integer.toString(HumanScore)+" Bilgisayar Puanı "+Integer.toString(ComputerScore));
+
+            }
+        });
+
+
+
+    }
+    public String play_turn(String player_choice){
+        String computer_choice ="";
+        Random r = new Random();
+
+        //bilgisayarın secimini yaptiriyoruz
+        int computer_choice_number = r.nextInt(3) + 1;
+        if (computer_choice_number ==1) {
+            computer_choice = "tas";
+        } else
+
+        if (computer_choice_number ==2){
+            computer_choice = "makas";
+        }else
+
+        if (computer_choice_number ==3){
+            computer_choice = "kagit";
+
+        }
+
+        //bilgisayarın secimine göre resimleri cektiriyoruz
+        if (computer_choice == "tas") {
+            iv_ComputerChoice.setImageResource(R.drawable.tas);
+        } else
+        if (computer_choice == "makas"){
+            iv_ComputerChoice.setImageResource(R.drawable.makas);
+        }else
+        if (computer_choice == "kagit"){
+            iv_ComputerChoice.setImageResource(R.drawable.kagit);
+        }
+
+        //bilgisayarın mı oyuncunun mu kazandigini belirleyecegimiz kısım
+        if (computer_choice == player_choice){
+            return  "Berabere , kimse puan kazanamadı.";
+
+
+        }
+        else if (player_choice == "tas" && computer_choice == "makas"){
+           HumanScore++;
+            return  "Tas makasi kırar , Kazandınız";
+        }
+        else if (player_choice == "tas" && computer_choice == "kagit"){
+            ComputerScore++;
+            return  "Kagit tasi sarar , Kaybettiniz";
+        }
+        else if (player_choice == "makas" && computer_choice == "tas"){
+            ComputerScore++;
+            return  "Tas makasi kırar , Kaybettiniz";
+        }
+        else if (player_choice == "makas" && computer_choice == "kagit"){
+            HumanScore++;
+            return  "Makas kagidi keser , Kazandınız";
+        }
+        else if (player_choice == "kagit" && computer_choice == "tas"){
+            HumanScore++;
+            return  "Kagit tasi sarar , Kazandınız";
+        }
+        else if (player_choice == "kagit" && computer_choice == "makas"){
+            ComputerScore++;
+            return  "Makas kagidi keser , Kaybettiniz";
+        }
+        else return  "HATA";
+    }
+
+}
